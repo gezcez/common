@@ -1,4 +1,4 @@
-import { IConfig } from "../../types/config"
+import { IConfig } from "../types/config"
 
 type logType = (string | number)[]
 export abstract class logger {

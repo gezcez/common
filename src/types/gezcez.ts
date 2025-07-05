@@ -1,3 +1,4 @@
+import { JWTPayload } from "jose"
 
 export type GezcezJWTPayload = {
 	jti: string

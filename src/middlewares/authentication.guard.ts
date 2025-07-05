@@ -6,7 +6,7 @@ import { OAuthUtils } from "../utils/oauth"
 
 export function AuthenticationGuard(config: {
 	app_key: string
-	override_jwt_config: {
+	override_jwt_config?: {
 		secret: CryptoKey | KeyObject | JWK | Uint8Array
 		payload: JWTVerifyOptions
 	}

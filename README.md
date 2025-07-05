@@ -1,15 +1,8 @@
-# common-utilities
+# @gezcez/common
 
-To install dependencies:
+common utilities for gezcez.com
 
-```bash
-bun install
-```
+https://www.npmjs.com/package/@gezcez/common
 
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Install via
+`bun install @gezcez/common`

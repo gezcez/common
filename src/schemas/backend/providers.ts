@@ -1,5 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core"
-import { TJoinStrings } from "../../src/db"
+import { TJoinStrings } from "@gezcez/common/utils/master"
 import { TABLE_ACTIONS } from "./users"
 
 export type ProviderCompany = "kentkart" | "a"

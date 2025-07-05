@@ -1,4 +1,4 @@
-import { Request } from "express"
+import type { Request } from "express"
 import { GezcezResponse } from "./Gezcez"
 
 export function GezcezError(error_type: ErrorType, error: any) {

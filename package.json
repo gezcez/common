@@ -1,14 +1,20 @@
 {
 	"name": "@gezcez/common",
-	"module": "index.ts",
-	"type": "module",
-	"devDependencies": {
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"version": "1.1.1",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gezcez/common-utils.git"
 	},
+	"type": "module",
+	"devDependencies": {},
 	"scripts": {
-		"move:src":"bun run scripts/move-src.ts",
-		"build:js": "bun build --outdir dist src/**/*.ts --target bun && bun run move:src",
-    	"build:dts": "tsc --emitDeclarationOnly --outDir dist",
-		"build":"bun run build:js && npm run build:dts"
+		"move:src": "bun run scripts/move-src.ts",
+		"build:js": "bun build --outdir dist src/**/index.ts --target bun --splitting",
+		"build:dts": "tsc --emitDeclarationOnly --outDir dist",
+		"build": "bun run build:js && npm run build:dts"
 	},
 	"peerDependencies": {
 		"typescript": "^5",
@@ -26,13 +32,22 @@
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.2"
 	},
-	"dependencies": {},
-	"exports": {
-		"./package.json": "./package.json",
-		"./db": {
-			"types": "./dist/db.d.ts",
-			"import": "./dist/db.mjs",
-			"require": "./dist/cjs/db.js"
+	"files": [
+		"dist"
+	],
+	"typesVersions": {
+		"*": {
+			"middlewares": [
+				"dist/middlewares/index.d.ts"
+			],
+			"utils": [
+				"dist/utils/index.d.ts"
+			],
+			"schemas/backend": [
+				"dist/schemas/backend/index.d.ts"
+			]
+
 		}
-	}
+	},
+	"dependencies": {}
 }
