@@ -21,6 +21,6 @@ export type TJoinStrings<A extends string, B extends string> = `${A}${B}`
 export function buildConfig<T extends IConfig>() {
 	const config_path = process.env.CONFIG_PATH
 	if (!config_path)
-		throw Error("utils.master: process.env.config_path is undefined")
-	return require(config_path) as T
+		logger.warning("utils.master: process.env.config_path is undefined, using the defaults")
+	return require(config_path || "../service.config.json") as T
 }

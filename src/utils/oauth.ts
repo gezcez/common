@@ -1,11 +1,8 @@
-import { jwtVerify, SignJWT } from "jose"
-import { GezcezJWTPayload } from "../types/gezcez"
 import { password } from "bun"
+import { jwtVerify, SignJWT } from "jose"
 import { IConfig } from "../types/config"
+import { GezcezJWTPayload } from "../types/gezcez"
 import { buildConfig } from "./master"
-import { userPermissionsTable } from "../schemas/backend/permissions"
-import { db } from "../db"
-import { and, eq } from "drizzle-orm"
 const config = buildConfig<IConfig>()
 export abstract class OAuthUtils {
 	static async signJWT(
@@ -72,22 +69,6 @@ export abstract class OAuthUtils {
 		})
 	}
 
-	static async listUserPermissionsWithNetworkId(
-		user_id: number,
-		network_id: number
-	) {
-		const results = await db
-			.select()
-			.from(userPermissionsTable)
-			.where(
-				and(
-					eq(userPermissionsTable.status, true),
-					eq(userPermissionsTable.user_id, user_id),
-					eq(userPermissionsTable.network_id, network_id)
-				)
-			)
-		return results
-	}
 	static async doesPermissionsMatch(
 		payload: GezcezJWTPayload,
 		network: "global" | (string & {}),

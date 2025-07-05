@@ -1,9 +1,9 @@
 {
 	"name": "@gezcez/common",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
+	"main": "./dist/index.ts",
+	"module": "./dist/index.ts",
 	"types": "./dist/index.d.ts",
-	"version": "1.1.3",
+	"version": "1.1.65",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/gezcez/common-utils.git"
@@ -12,28 +12,27 @@
 	"devDependencies": {},
 	"scripts": {
 		"move:src": "bun run scripts/move-src.ts",
-		"build:js": "bun build --outdir dist src/index.ts --target bun",
-		"build:dts": "tsc --emitDeclarationOnly --outDir dist",
-		"build": "bun run build:js && npm run build:dts"
+		"___build:js": "bun build --outdir dist src/index.ts --target bun",
+		"build:dts": "tsc --project ./tsconfig.json --emitDeclarationOnly --outDir dist && bun run scripts/move-src.ts",
+		"___build": "bun run build:js && npm run build:dts"
 	},
 	"peerDependencies": {
-		"typescript": "^5",
-		"@nestjs/common": "^11.1.3",
-		"@nestjs/swagger": "^11.2.0",
-		"@types/express": "^5.0.3",
-		"drizzle-orm": "^0.44.2",
-		"jose": "^6.0.11",
 		"@libsql/client": "^0.15.9",
+		"@nestjs/common": "^11.1.3",
 		"@nestjs/core": "^11.1.3",
 		"@nestjs/platform-express": "^11.1.3",
 		"@nestjs/platform-socket.io": "^11.1.3",
 		"@nestjs/platform-ws": "^11.1.3",
+		"@nestjs/swagger": "^11.2.0",
 		"@types/bun": "latest",
+		"@types/express": "^5.0.3",
 		"class-transformer": "^0.5.1",
-		"class-validator": "^0.14.2"
+		"class-validator": "^0.14.2",
+		"jose": "^6.0.11",
+		"typescript": "^5"
 	},
 	"files": [
-		"src"
+		"dist"
 	],
 	"typesVersions": {
 		"*": {
@@ -46,7 +45,6 @@
 			"schemas/backend": [
 				"dist/schemas/backend/index.d.ts"
 			]
-
 		}
 	},
 	"dependencies": {}
