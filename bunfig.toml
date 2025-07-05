@@ -1,0 +1,1 @@
+external = ["typescript","@nestjs/common","@nestjs/swagger","@types/express","drizzle-orm","jose","@libsql/client","@nestjs/core","@nestjs/platform-express","@nestjs/platform-socket.io","@nestjs/platform-ws","@types/bun","class-transformer","class-validator"]

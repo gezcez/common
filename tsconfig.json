@@ -5,6 +5,8 @@
 		"target": "ES2021", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
 		/* Modules */
 		"module": "ES2022", /* Specify what module code is generated. */
 		"moduleResolution": "node", /* Specify how TypeScript looks up a file from a given module specifier. */
@@ -32,5 +34,5 @@
 	},
 	"include": [
 		"src"
-, "src/utils", "src/tsrc/schemassrc/middlewares"middlewares", "src/db.tssrc/Gezcez.tssrc/GezcezError.tssrc/index, "src/schemassrc/utilstils", "types".ts", "index.ts"	]
-, "src/types", "src/schemas", "src/middlewares"}
+	]
+}

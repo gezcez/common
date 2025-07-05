@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext } from "@nestjs/common"
 import { JWK, jwtVerify, JWTVerifyOptions, KeyObject } from "jose"
-import { GezcezError } from "../src/GezcezError"
-import { GezcezJWTPayload } from "../../types/gezcezzcez"
-import { OAuthUtils } from "../src/utils/oauth"
+import { GezcezError } from "../GezcezError"
+import { GezcezJWTPayload } from "../types/gezcez"
+import { OAuthUtils } from "../utils/oauth"
 
 export function AuthenticationGuard(config: {
 	app_key: string

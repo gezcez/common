@@ -1,9 +1,9 @@
 import { jwtVerify, SignJWT } from "jose"
-import { GezcezJWTPayload } from "../../types/gezcez"
+import { GezcezJWTPayload } from "../types/gezcez"
 import { password } from "bun"
-import { IConfig } from "../../types/config"
+import { IConfig } from "../types/config"
 import { buildConfig } from "./master"
-import { userPermissionsTable } from "../../schemas/backend/permissions"
+import { userPermissionsTable } from "../schemas/backend/permissions"
 import { db } from "../db"
 import { and, eq } from "drizzle-orm"
 const config = buildConfig<IConfig>()

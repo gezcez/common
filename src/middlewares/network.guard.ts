@@ -2,7 +2,7 @@ import {
 	CanActivate,
 	ExecutionContext
 } from "@nestjs/common"
-import { GezcezError } from "../src/GezcezError" 
+import { GezcezError } from "../GezcezError" 
 
 export class NetworkGuard implements CanActivate {
 	async canActivate(context:ExecutionContext) {

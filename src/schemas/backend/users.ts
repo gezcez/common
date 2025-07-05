@@ -1,4 +1,4 @@
-import { IConfig } from "@gezcez/common/types/config
+import { IConfig } from "@gezcez/common/types/config"
 import { buildConfig } from "@gezcez/common/utils/master";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 const config = buildConfig<IConfig>()
