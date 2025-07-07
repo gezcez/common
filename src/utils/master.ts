@@ -17,10 +17,12 @@ export abstract class logger {
 }
 
 export type TJoinStrings<A extends string, B extends string> = `${A}${B}`
-
+let imported_util : IConfig
 export function buildConfig<T extends IConfig>() {
+	if (imported_util) return imported_util
 	const config_path = process.env.CONFIG_PATH
 	if (!config_path)
 		logger.warning("utils.master: process.env.config_path is undefined, using the defaults")
-	return require(config_path || "../service.config.json") as T
+	imported_util = require(config_path || "../service.config.json") as T
+	return imported_util
 }
