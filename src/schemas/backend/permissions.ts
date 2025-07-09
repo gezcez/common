@@ -1,8 +1,9 @@
 import { index, sqliteTable, int, text, uniqueIndex } from "drizzle-orm/sqlite-core";
-import { usersTable,TABLE_ACTIONS } from "./users";
+import { usersTable } from "./users";
 import { appsTable } from "./apps";
 import { networksTable } from "./networks";
 import { rolesTable } from "./roles";
+import { TABLE_ACTIONS } from "../../utils";
 
 
 export const permissionsTable = sqliteTable("permissions", {

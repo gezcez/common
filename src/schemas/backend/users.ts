@@ -1,5 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { IConfig } from "types";
+import { IConfig } from "../../types"; 
 import { buildConfig } from "../../utils";
 const config = buildConfig<IConfig>()
 export const usersTable = sqliteTable("users", {
@@ -14,11 +14,3 @@ export const usersTable = sqliteTable("users", {
 	ban_record: int(),
 });
 
-
-
-export const TABLE_ACTIONS = {
-	created_by:int().notNull(),
-	updated_by:int(),
-	created_at:int({mode:"timestamp_ms"}).defaultNow(),
-	updated_at:int({mode:"timestamp_ms"}),
-}

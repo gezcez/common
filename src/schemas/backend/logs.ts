@@ -1,5 +1,5 @@
 import { index, int, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core"
-import { TABLE_ACTIONS } from "./users"
+import { TABLE_ACTIONS } from "../../utils"
 
 export const logsTable = sqliteTable("logs",
 	{

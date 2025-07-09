@@ -1,6 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core"
 import { TJoinStrings } from "../../"
-import { TABLE_ACTIONS } from "./users"
+import { TABLE_ACTIONS } from "../../"
 
 export type ProviderCompany = "kentkart" | "a"
 export type ProviderSubdomains = {
