@@ -3,6 +3,7 @@ import { JWK, jwtVerify, JWTVerifyOptions, KeyObject } from "jose"
 import { GezcezError } from "../GezcezError"
 import { GezcezJWTPayload } from "../types/gezcez"
 import { OAuthUtils } from "../utils/oauth"
+import { logger } from "../utils"
 
 export function AuthenticationGuard(config: {
 	app_key: "inherit" | (string & {})
@@ -10,7 +11,7 @@ export function AuthenticationGuard(config: {
 		secret: CryptoKey | KeyObject | JWK | Uint8Array
 		payload: JWTVerifyOptions
 	}
-	is_inherit?:boolean
+	is_inherit?: boolean
 	is_use_refresh_token?: boolean
 	handleInvalidation?: (
 		payload: GezcezJWTPayload,
@@ -21,7 +22,6 @@ export function AuthenticationGuard(config: {
 		async canActivate(context: ExecutionContext) {
 			const req = context.switchToHttp().getRequest()
 			const token = req.headers.authorization?.split(" ")[1]
-
 			if (!token) {
 				throw GezcezError("UNAUTHORIZED", {
 					__message:
@@ -78,6 +78,7 @@ export function AuthenticationGuard(config: {
 				await config.handleInvalidation(payload, context)
 			}
 			req["payload"] = payload
+
 			return true
 		}
 	}

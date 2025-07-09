@@ -12,6 +12,8 @@ export const permissionsTable = sqliteTable("permissions", {
 	key: text().unique().notNull(),
 	description: text(),
 	type: text().$type<"scoped" | "global">().default("scoped").notNull(),
+	page_label:text(),
+	page_href:text(),
 	...TABLE_ACTIONS
 }, (table) => [
 	uniqueIndex("permissions_unique_index").on(table.app, table.key)]

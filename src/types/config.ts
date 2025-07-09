@@ -15,13 +15,18 @@ export interface IConfig {
 			"apps.read": number
 			"apps.write": number
 		}
-		portal: {
-			"base.access": number
-			"users.permissions.read": number
-			"users.permissions.write": number
-			"users.permissions.list": number
-			"users.list": number
-			"base.network_admin": number
+		dashboard: {
+			
+			"base.access":number,
+			"users.permissions.read":number,
+			"users.permissions.write":number,
+			"users.permissions.list":number,
+			"users.list":number,
+			"base.roles.list-permissions":number,
+			"users.roles.read":number,
+			"users.roles.write":number,
+			"base.roles.list":number,
+			"base.roles.list-users":number,
 		}
 	}
 	validation: {
