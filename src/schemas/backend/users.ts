@@ -1,7 +1,7 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { IConfig } from "../../types"; 
 import { buildConfig } from "../../utils";
-const config = buildConfig<IConfig>()
+const config = buildConfig()
 export const usersTable = sqliteTable("users", {
 	id: int().primaryKey({"autoIncrement":true}),
 	username: text({ length: config.validation.username.max_length }).notNull().unique(),

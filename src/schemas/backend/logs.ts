@@ -11,8 +11,7 @@ export const logsTable = sqliteTable("logs",
 			ip: string
 			args: any
 		}>(),
-		created_by:TABLE_ACTIONS.created_by,
-		created_at:TABLE_ACTIONS.created_at,
+		...TABLE_ACTIONS
 	},
 	// (table) => [index("roles_table_user_id_created_at_index").on(table.created_by, table.created_at)]
 )

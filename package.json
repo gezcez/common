@@ -1,5 +1,5 @@
 {
-	"name": "@gezcez/common",
+	"name": "shared",
 	"main": "./dist/index.ts",
 	"module": "./dist/index.ts",
 	"types": "./dist/index.d.ts",
@@ -9,7 +9,9 @@
 		"url": "https://github.com/gezcez/common-utils.git"
 	},
 	"type": "module",
-	"devDependencies": {},
+	"devDependencies": {
+		"bun-types": "^1.2.18"
+	},
 	"scripts": {
 		"move:src": "bun run scripts/move-src.ts",
 		"___build:js": "bun build --outdir dist src/index.ts --target bun",
@@ -24,7 +26,7 @@
 		"@nestjs/platform-socket.io": "^11.1.3",
 		"@nestjs/platform-ws": "^11.1.3",
 		"@nestjs/swagger": "^11.2.0",
-		"@types/bun": "latest",
+		"@types/bun": "^1.2.18",
 		"@types/express": "^5.0.3",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.2",
@@ -48,5 +50,7 @@
 			]
 		}
 	},
-	"dependencies": {}
+	"dependencies": {
+		"drizzle-kit": "^0.31.4"
+	}
 }

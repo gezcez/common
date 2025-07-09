@@ -16,7 +16,6 @@
 		/* JavaScript Support */
 		/* Emit */
 		"composite": true,
-		"baseUrl": "./src",
 		/* Interop Constraints */
 		"esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
 		"forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
@@ -28,5 +27,5 @@
 		/* Completeness */
 		"skipLibCheck": true, /* Skip type checking all .d.ts files. */
 
-	}, "include": ["./src/service.config.json"]
+	}
 }

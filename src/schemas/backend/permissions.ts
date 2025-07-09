@@ -26,7 +26,7 @@ export const userPermissionsTable = sqliteTable("user_permissions", {
 	network_id: int().references(()=>networksTable.id).notNull(),
 	...TABLE_ACTIONS
 }, (table) => [
-	index("user_permissions_idx").on(table.user_id, table.permission_id),
+	index("user_permissions_idx").on(table.user_id,table.network_id, table.permission_id),
 	uniqueIndex("user_permissions_unique_index").on(table.user_id,table.permission_id,table.network_id)
 ])
 
@@ -34,7 +34,6 @@ export const rolePermissionsTable = sqliteTable("role_permissions", {
 	id:int().primaryKey({autoIncrement:true}),
 	role_id: int().references(() => rolesTable.id).notNull(),
 	permission_id: int().references(() => permissionsTable.id).notNull(),
-	status: int({ mode: "boolean" }).default(false).notNull(),
 	...TABLE_ACTIONS
 }, (table) => [
 	index("role_permissions_idx").on(table.role_id, table.permission_id),

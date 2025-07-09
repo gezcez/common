@@ -1,9 +1,10 @@
-import { password } from "bun"
 import { jwtVerify, SignJWT } from "jose"
 import { IConfig } from "../types/config"
 import { GezcezJWTPayload } from "../types/gezcez"
-import { buildConfig } from "./master"
-const config = buildConfig<IConfig>()
+import { buildConfig } from "./config"
+import { RoleUtils } from "./role.utils"
+import { SYNCED_CONFIG } from "./master"
+const config = buildConfig()
 export abstract class OAuthUtils {
 	static async signJWT(
 		payload: Omit<GezcezJWTPayload, "scopes">,
@@ -63,7 +64,7 @@ export abstract class OAuthUtils {
 		}
 	}
 	static async hashPassword(pwd: string) {
-		return await password.hash(pwd, {
+		return await Bun.password.hash(pwd, {
 			algorithm: "bcrypt",
 			cost: 14,
 		})
@@ -78,7 +79,13 @@ export abstract class OAuthUtils {
 			payload,
 			network === "global" ? "_" : network
 		)
-		if (user_permissions.includes(permission_id)) return true
+		const user_roles = RoleUtils.getRolesFromValue(
+			payload.roles[network === "global" ? "_" : network]
+		)
+		// console.log(`user ${payload.sub} roles`,user_roles.map((e)=>e.id).join(","))
+		const role_permissions = user_roles.map((role)=>SYNCED_CONFIG.role_permissions.filter((p)=>p.role_id===role.id)).reduce((a,b)=>[...a,...b],[])
+		// console.log("ROLE PERMISSIONS FOUND:",role_permissions.map((e)=>e.permission_id).join(","))
+		if ([...user_permissions,...role_permissions.map((e)=>e.permission_id)].includes(permission_id)) return true
 		return false
 	}
 
@@ -118,3 +125,15 @@ export const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 export const secret_random = new TextEncoder().encode(
 	process.env.JWT_RANDOM_STUFF
 )
+
+export async function isTokenInvalid(payload:GezcezJWTPayload) {
+	const id = payload.jti
+	const parent_id = payload.parent
+	if (!id) return true
+	let is_invalid_due_to_id = SYNCED_CONFIG.invalid_tokens.find((e)=>e===id)
+	let is_invalid_due_to_parent_id
+	if (parent_id) {
+		is_invalid_due_to_parent_id = SYNCED_CONFIG.invalid_tokens.find((e)=>e===parent_id)
+	}
+	return is_invalid_due_to_id ||is_invalid_due_to_parent_id
+}

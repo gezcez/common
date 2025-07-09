@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext } from "@nestjs/common"
 import type { Request } from "express"
 import { GezcezError, GezcezValidationFailedError } from "../GezcezError"
 import { GezcezJWTPayload } from "../types/gezcez"
-import { OAuthUtils } from "../utils/oauth"
+import { isTokenInvalid, OAuthUtils } from "../utils/oauth"
 export function AuthorizationGuard<T extends true,SCOPE extends "global" | "scoped">(config: {
 	scope: SCOPE
 	permission_id: number
@@ -31,6 +31,9 @@ export function AuthorizationGuard<T extends true,SCOPE extends "global" | "scop
 					__message: "Bu işlemi gerçekleştirmek için giriş yapmış olmanız lazım.",
 				})
 			}
+			if (payload.type !== "access") throw GezcezError("BAD_REQUEST",{
+				__message:`token.type geçersiz ('access' beklenirken '${payload.type} bulundu')`
+			})
 			const network_id = req["network_id"]
 			let can_activate = false
 			if (config.scope === "scoped") {
@@ -71,6 +74,11 @@ export function AuthorizationGuard<T extends true,SCOPE extends "global" | "scop
 			}
 			if (config.handleInvalidation) {
 				await config.handleInvalidation(payload, context)
+			} else {
+				const is_invalid = await isTokenInvalid(payload)
+				if (is_invalid) {
+					throw GezcezError("UNAUTHORIZED",{__message:"Oturumun süresi dolmuş veya çıkış yapılmış."})
+				}
 			}
 			req["payload"] = payload
 			return true

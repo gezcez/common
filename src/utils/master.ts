@@ -1,4 +1,3 @@
-
 import { IConfig } from "../types/config"
 import { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core"
 import { and, eq, gte } from "drizzle-orm"
@@ -32,14 +31,6 @@ export abstract class logger {
 }
 
 export type TJoinStrings<A extends string, B extends string> = `${A}${B}`
-export function buildConfig<T extends IConfig>() {
-	const config_path = process.env.CONFIG_PATH
-	if (!config_path)
-		logger.warning(
-			"utils.master: process.env.config_path is undefined, using the defaults"
-		)
-	return createRequire(import.meta.url)(config_path || "../service.config.json")
-}
 
 export async function fetchJSON(
 	input: string | URL | globalThis.Request,
@@ -50,22 +41,29 @@ export async function fetchJSON(
 	return json
 }
 import { LibSQLDatabase } from "drizzle-orm/libsql"
-import { createRequire } from "module"
-import { networksTable, permissionsTable, refreshTokensTable, rolesTable } from "../schemas/backend"
+import {
+	networksTable,
+	permissionsTable,
+	refreshTokensTable,
+	rolePermissionsTable,
+	rolesTable,
+} from "../schemas/backend"
 
 export let SYNCED_CONFIG: {
 	roles: (typeof rolesTable.$inferSelect)[]
+	role_permissions: (typeof rolePermissionsTable.$inferSelect)[]
 	permissions: (typeof permissionsTable.$inferSelect)[]
 	networks: (typeof networksTable.$inferSelect)[]
-	invalid_tokens: Omit<typeof refreshTokensTable.$inferSelect, "args">[]
+	invalid_tokens: string[]
 } = {
 	roles: [],
+	role_permissions: [],
 	permissions: [],
 	networks: [],
 	invalid_tokens: [],
 }
 
-export async function resyncConfig(args: { db: LibSQLDatabase }) {
+export async function RELOAD_SYNCED_CONFIG(args: { db: LibSQLDatabase }) {
 	logger.log("refreshing sync config!")
 	let { db } = args
 	const networks_promise = db.select().from(networksTable)
@@ -80,15 +78,19 @@ export async function resyncConfig(args: { db: LibSQLDatabase }) {
 				gte(refreshTokensTable.updated_at, new Date(Date.now() - ONE_DAY))
 			)
 		)
-	const [networks, permissions, roles, invalid_tokens] = await Promise.all([
-		networks_promise.all(),
-		permissions_promise.all(),
-		roles_promise.all(),
-		invalid_tokens_promise.all(),
-	])
+	const role_permissions_promise = db.select().from(rolePermissionsTable)
+	const [networks, permissions, roles, invalid_tokens, role_permissions] =
+		await Promise.all([
+			networks_promise.all(),
+			permissions_promise.all(),
+			roles_promise.all(),
+			invalid_tokens_promise.all(),
+			role_permissions_promise.all(),
+		])
 	SYNCED_CONFIG.networks = networks
 	SYNCED_CONFIG.permissions = permissions
 	SYNCED_CONFIG.roles = roles
+	SYNCED_CONFIG.role_permissions = role_permissions
 	SYNCED_CONFIG.invalid_tokens = invalid_tokens.map((e) => ({
 		...e,
 		args: undefined,
@@ -98,7 +100,8 @@ export async function resyncConfig(args: { db: LibSQLDatabase }) {
 		`networks:${networks.length}`,
 		`permissions:${permissions.length}`,
 		`roles:${roles.length}`,
-		`invalid_tokens:${invalid_tokens.length}`
+		`invalid_tokens:${invalid_tokens.length}`,
+		`role_permissions:${role_permissions.length}`
 	)
 	return SYNCED_CONFIG
 }
