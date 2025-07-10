@@ -16,6 +16,7 @@ export abstract class RoleUtils {
 		if (!value) value = 0
 		const roles = SYNCED_CONFIG.roles
 		const roles_sorted = roles.sort((a,b)=>b.id-a.id)
+		console.log("roles_sorted",roles_sorted)
 		const found_roles = []
 		let current_value = value
 		for (const role of roles_sorted) {
@@ -29,8 +30,9 @@ export abstract class RoleUtils {
 	static getValueFromRoles(roles:typeof userRolesTable.$inferSelect[]) {
 		let counter = 0
 		for (const role of roles) {
-			counter+= 2**(role.id)
+			counter+= 2**(role.role_id)
 		}
+		console.log("value: ",counter,"roles:",roles.map((e)=>e.id))
 		return counter
 	}
 	
