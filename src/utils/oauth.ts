@@ -72,19 +72,19 @@ export abstract class OAuthUtils {
 
 	static async doesPermissionsMatch(
 		payload: GezcezJWTPayload,
-		network: "global" | (string & {}),
+		network: "global" | (number),
 		permission_id: number
 	) {
 		const user_permissions = this.getPermissionIDsFromPayload(
 			payload,
-			network === "global" ? "_" : network
+			network === "global" ? "_" : `${network}`
 		)
 		const user_roles = RoleUtils.getRolesFromValue(
-			payload.roles[network === "global" ? "_" : network]
+			payload.roles[network === "global" ? "_" : `${network}`]
 		)
-		// console.log(`user ${payload.sub} roles`,user_roles.map((e)=>e.id).join(","))
+		console.log(`user ${payload.sub} roles`,user_roles.map((e)=>e.id).join(","))
 		const role_permissions = user_roles.map((role)=>SYNCED_CONFIG.role_permissions.filter((p)=>p.role_id===role.id)).reduce((a,b)=>[...a,...b],[])
-		// console.log("ROLE PERMISSIONS FOUND:",role_permissions.map((e)=>e.permission_id).join(","))
+		console.log(`search: ${permission_id}`,"role permissions:",role_permissions.map((e)=>e.permission_id).join(","))
 		if ([...user_permissions,...role_permissions.map((e)=>e.permission_id)].includes(permission_id)) return true
 		return false
 	}
