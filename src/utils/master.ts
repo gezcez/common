@@ -52,7 +52,7 @@ export let SYNCED_CONFIG: {
 	__DANGEROURS_ACCESS_DB: undefined,
 	invalid_tokens: [],
 }
-
+export type ProperPromise<T> = Promise<[T]|[false,string]>
 export async function RELOAD_SYNCED_CONFIG(args: { db: LibSQLDatabase }) {
 	logger.log("refreshing sync config!")
 	let { db } = args
