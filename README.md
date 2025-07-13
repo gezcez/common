@@ -1,6 +1,6 @@
-# @gezcez/common
+# @gezcez/shared
 
-common utilities for gezcez.com
+shared utilities for gezcez.com
 
 https://www.npmjs.com/package/@gezcez/common
 
