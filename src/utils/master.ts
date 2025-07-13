@@ -28,7 +28,7 @@ export async function fetchJSON(input: string | URL | globalThis.Request, init?:
 import { LibSQLDatabase } from "drizzle-orm/libsql"
 import {
 	networksTable,
-	permissionPathMatrix,
+	permissionPathRegistryTable,
 	permissionsTable,
 	refreshTokensTable,
 	rolePermissionsTable,
@@ -41,7 +41,7 @@ export let SYNCED_CONFIG: {
 	permissions: (typeof permissionsTable.$inferSelect)[]
 	networks: (typeof networksTable.$inferSelect)[]
 	invalid_tokens: string[]
-	path_registries: (typeof permissionPathMatrix.$inferSelect)[]
+	path_registries: (typeof permissionPathRegistryTable.$inferSelect)[]
 	__DANGEROURS_ACCESS_DB: LibSQLDatabase | undefined
 } = {
 	roles: [],
@@ -58,6 +58,7 @@ export async function RELOAD_SYNCED_CONFIG(args: { db: LibSQLDatabase }) {
 	let { db } = args
 	const networks_promise = db.select().from(networksTable)
 	const permissions_promise = db.select().from(permissionsTable)
+	const path_registries_promise = db.select().from(permissionPathRegistryTable)
 	const roles_promise = db.select().from(rolesTable)
 	const invalid_tokens_promise = db
 		.select()
@@ -69,12 +70,13 @@ export async function RELOAD_SYNCED_CONFIG(args: { db: LibSQLDatabase }) {
 			)
 		)
 	const role_permissions_promise = db.select().from(rolePermissionsTable)
-	const [networks, permissions, roles, invalid_tokens, role_permissions] = await Promise.all([
+	const [networks, permissions, roles, invalid_tokens, role_permissions,path_registries] = await Promise.all([
 		networks_promise.all(),
 		permissions_promise.all(),
 		roles_promise.all(),
 		invalid_tokens_promise.all(),
 		role_permissions_promise.all(),
+		path_registries_promise.all()
 	])
 	SYNCED_CONFIG.__DANGEROURS_ACCESS_DB = db
 	SYNCED_CONFIG.networks = networks
@@ -82,6 +84,7 @@ export async function RELOAD_SYNCED_CONFIG(args: { db: LibSQLDatabase }) {
 	SYNCED_CONFIG.roles = roles
 	SYNCED_CONFIG.role_permissions = role_permissions
 	SYNCED_CONFIG.invalid_tokens = invalid_tokens.map((e) => "invalid")
+	SYNCED_CONFIG.path_registries=path_registries
 	logger.log(
 		"sync successfull",
 		`networks:${networks.length}`,

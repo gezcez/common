@@ -2,7 +2,7 @@ import { ConfigurableModuleBuilder, INestApplication, Type } from "@nestjs/commo
 import { PATH_METADATA, METHOD_METADATA, GUARDS_METADATA } from "@nestjs/common/constants"
 import "reflect-metadata"
 import { logger, RELOAD_SYNCED_CONFIG, SYNCED_CONFIG } from "./master"
-import { permissionPathMatrix, permissionsTable } from "../schemas/backend"
+import { permissionPathRegistryTable, permissionsTable } from "../schemas/backend"
 interface IArgs {
 	config: {
 		app_key: string
@@ -38,7 +38,7 @@ export async function handlePermissionRegistryAndReturnID(args: IArgs) {
 }
 async function upsertPathRegistry(args: IArgs & { permission: typeof permissionsTable.$inferSelect }) {
 	const matrix_results = await SYNCED_CONFIG.__DANGEROURS_ACCESS_DB
-		?.insert(permissionPathMatrix)
+		?.insert(permissionPathRegistryTable)
 		.values({
 			path: args.path,
 			method: args.method,
@@ -48,7 +48,7 @@ async function upsertPathRegistry(args: IArgs & { permission: typeof permissions
 			type: args.config.scope,
 		})
 		.onConflictDoUpdate({
-			target: [permissionPathMatrix.path, permissionPathMatrix.method],
+			target: [permissionPathRegistryTable.path, permissionPathRegistryTable.method],
 			set: {
 				updated_at: new Date(),
 				description: args.config.description,

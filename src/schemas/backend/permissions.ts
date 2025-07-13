@@ -16,7 +16,7 @@ export const permissionsTable = sqliteTable("permissions", {
 }, (table) => [
 	uniqueIndex("permissions_unique_index").on(table.app, table.key)]
 )
-export const permissionPathMatrix = sqliteTable("permission_path_matrix",{
+export const permissionPathRegistryTable = sqliteTable("permission_path_matrix",{
 	id: int().primaryKey({ autoIncrement: true }).notNull(),
 	permission_id: int().references(()=>permissionsTable.id),
 	path:text().notNull(),
